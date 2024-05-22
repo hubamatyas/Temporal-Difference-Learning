@@ -2,8 +2,6 @@
 
 We start by exploring how various $\alpha$ and `iteration_values` pairs work using an initial, broad grid search. With parameters $\alpha = [0.01, \dots, 0.5]$, `iteration_values` $= [10, \dots, 100]$, the z-axis measures the (R)MSE of the ground truth and the TD Learning value function.
 
-![Initial Broad Grid Search with MSE of GT and TD(0) with $\alpha = [0.01, \dots, 0.5]$, `iteration_values` $= [10, \dots, 100]$](images/q1_f_gridsearch1.png)
-
 ![Initial Broad Grid Search with RMSE instead of MSE, using TD(0) with the same parameters](images/q1_f_gridsearch2.png)
 
 In Figure 1, spanning $\alpha$ values from 0.01 to 0.5 and `iteration_values` from 10 to 100, the 3D meshgrid plot revealed a disproportionately high MSE at an alpha of 0.01 with just 10 iterations. This error arises from the algorithm's inability to adequately approximate the value function due to the excessively small $\alpha$ (i.e., minor updates to the value function) being unable to converge with limited iterations. In other words, this highlights the impracticality of minuscule $\alpha$ values for achieving convergence within fewer iterations.
@@ -15,7 +13,6 @@ Moreover, the plot's extreme values at low $\alpha$ and iteration counts signifi
 
 The change to RMSE in Figure 2 improved the plot. Since the RMSE is the square root of the MSE, it brings the error values into a narrower range that is often more interpretable. Additionally, because the RMSE is on the same scale as the original data, it tends to be more representative of the true magnitude of the error. However, we still cannot discern the difference within larger $\alpha$-iteration pairs-the purple surface looks the same. Therefore, narrowing down the search space is the next step to take for better insights, which will be done for the next two figures.
 
-![Narrowed-Down Grid Search with RMSE of GT and TD(0) with $\alpha = [0.1, \dots, 1.0]$, `iteration_values` $= [100, \dots, 600]$](images/q1_f_gridsearch3.png)
 
 ![Narrowed-Down Grid Search using the same parameters, averaged over 50 TD(0) iterations](images/q1_f_gridsearch4.png)
 
@@ -30,10 +27,6 @@ This refined visualisation revealed that once a sufficient number of iterations 
 # Iteration-by-Iteration Exploration and Decaying $\alpha$
 
 This section explores the influence of various constant $\alpha$ values on the convergence behavior of a TD learning algorithm and introduces the decaying $\alpha$.
-
-![TD Learning Time-Series Comparison of $\alpha = [0.0001, 0.0005, 0.05, 0.5]$](images/q1_f_constant_alphas.png)
-
-![TD Learning Time-Series Comparison highlighting decaying $\alpha$ ($\alpha_{initial} = 0.1$, decay rate = 0.05)](images/q1_f_decaying_alpha.png)
 
 The visual comparison in the above figures paints a clear picture: lower $\alpha$ values correspond with slower convergence rates as evidenced by a gradual decline in log-scaled RMSE. Notably, the smallest $\alpha$ (0.0001) fails to converge within 500 iterations, suggesting inefficiency for practical purposes. In stark contrast, a higher $\alpha$ (0.5) quickly reaches a plateau, yet its RMSE levels off at a higher value compared to lower $\alpha$ values, indicating potential oscillation around the optimal value and not necessarily converging to the true minimum.
 
@@ -85,17 +78,12 @@ Our methodology to explore these metrics involves an analysis of graphical plots
 
 Log-scaling is applied to the delta of the value functions to diminish the impact of extreme values and to provide a clearer visualization of the rate of convergence as learning progresses.
 
-![Log delta for 10,000 iterations with checkpoints and a second y-axis for $\epsilon$](images/q2_c_Delta10k.png)
-
-![Sum of rewards for 10,000 iterations with checkpoints and a second y-axis for $\epsilon$](images/q2_c_Rewards10k.png)
-
 Figures above present a combined outlook of the learning process captured by the Q-learning algorithm over 10,000 iterations. Initially, as seen in the first figure, there is a sharp decrease in the log delta of the value function, signaling substantial adjustments in the agent’s understanding of the environment. Concurrently, the second figure depicts a rapid ascent in the sum of rewards, reinforcing the idea that the agent is quickly capitalizing on the environment to accumulate gains.
 
 Following this initial burst of learning, both figures illustrate a stabilization phase: the delta change and the sum of rewards level off into minor oscillations. This plateau signifies the transition from a phase of discovery and learning to careful optimization, where gains from newfound knowledge are less dramatic, possibly because the agent has already exploited the more obvious strategies for higher rewards.
 
 Overlaying the $\epsilon$ value on these plots emphasizes the exploration-exploitation balance in play. The declining purple line denoting $\epsilon$ indicates a decreasing tendency for exploration over time. As the algorithm progressively favors exploitation of the known strategy, the rate of discovery and learning plateaus. The alignment of reduced $\epsilon$ values with the flattening of delta change and reward accumulation suggests that as exploration decreases, so does the likelihood of large gains, which corresponds with a matured policy that requires less deviation from established strategies.
 
-![Zoomed in log delta for 10,000 iterations with checkpoints and a second y-axis for $\epsilon$](images/q2_c_Delta10k_Z.png)
 
 An interesting observation in the zoomed figure is after the steep decline, it exhibits a slight rebound (highlighted in the dark blue circle), indicative of the algorithm correcting an overshoot in value estimation. This could be reflected by Q-learning's off-policy nature, which allows it to make larger, riskier updates in search of an optimal policy.
 
@@ -140,10 +128,6 @@ Table 2, offers a clearer picture of the algorithm's behavior in the steadier le
 # Investigating Optimality
 
 To dive deeper into the optimality of the Q-learning algorithm, we extend the analysis to 100,000 iterations with key checkpoints at [100, 500, 1,000, 5,000, 10,000, 50,000]. This allows for a prolonged examination of the algorithm's performance, providing insights into its long-term convergence patterns.
-
-![Log delta for 100,000 iterations with checkpoints and a second y-axis for $\epsilon$](images/q2_c_Delta100k.png)
-
-![Sum of rewards for 100,000 iterations with checkpoints and a second y-axis for $\epsilon$](images/q2_c_Rewards100k.png)
 
 The extended run revealed that oscillations within the value function delta continue even at 100,000 iterations. These persistent fluctuations suggest that while the algorithm refines its value estimates, there remains an inherent level of uncertainty and exploration.
 
